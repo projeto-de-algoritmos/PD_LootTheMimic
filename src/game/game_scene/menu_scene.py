@@ -6,14 +6,6 @@ import pygame
 from pygame.locals import *
 
 from src.config import (
-    CANVAS_HEIGHT,
-    CANVAS_WIDTH,
-    CANVAS_X_POSITION,
-    CANVAS_Y_POSITION,
-    POINT_RADIUS,
-    NUMBER_OF_POINTS,
-    WINDOW_HEIGHT,
-    WINDOW_WIDTH,
     ASSETS_DIR
 )
 

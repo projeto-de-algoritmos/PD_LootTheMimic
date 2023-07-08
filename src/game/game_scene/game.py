@@ -10,30 +10,24 @@ from src.config import (
     WINDOW_WIDTH,
 )
 
-from src.game.game_scene.game import GameScene
 from src.game.game_scene.menu_scene import MenuScene
 from src.game.knapsack import Knapsack
 
 
+class GameState:
+    PLAYING = 1
+    SPAWNING = 2
+
 class GameScene:
 
-    def __init__(self, window, difficulty):
+    def __init__(self, window):
         self.window = window
-        self.knapsack = Knapsack(window, difficulty)
+        self.knapsack = Knapsack(window)
 
-        self.difficulty = difficulty
         self.score = 0
 
         self.item_list = self.generate_sample_itens()
-        
-        # load image texture
-        crt_texture = pygame.image.load(ASSETS_DIR + 'crt_scanlines.png').convert_alpha()
-        crt_texture.set_alpha(100)
-        self.crt_texture = pygame.transform.scale(crt_texture, (WINDOW_WIDTH, WINDOW_HEIGHT))
-
-        # load hud image
-        hud_image = pygame.image.load(ASSETS_DIR + 'hud.png').convert_alpha()
-        self.hud_image = pygame.transform.scale(hud_image, (WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.start_ticks = pygame.time.get_ticks()
 
     def generate_sample_itens(self):
         item_list = [
@@ -59,9 +53,18 @@ class GameScene:
             {'name': 'Grass Crest Shield', 'weight': 3, 'value': 15},
         ]
 
-        return item_list
+        return random.sample(item_list, 10)
         
     def draw_hud(self):
         self.window.blit(self.hud_image, (0, 0))
-
     
+    def run(self):
+        self.state = GameState.PLAYING
+        self.knapsack = Knapsack(self.window)
+        itens = self.item_list
+
+        print('\nItens in chest:')
+        print(itens)
+
+        print('\nKnapsack solve:')
+        print(self.knapsack.solve_dynamic_programming(itens, 40))
