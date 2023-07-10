@@ -39,7 +39,7 @@ class Button:
 
 class GameState:
     PLAYING = 1
-    SPAWNING = 2
+    GAME_OVER = 2
 
 
 class GameScene:
@@ -112,12 +112,13 @@ class GameScene:
         self.state = GameState.PLAYING
         self.knapsack = Knapsack(self.window)
         items = self.item_list
+        backpack_capacity = 10
 
         pprint("\nItens in chest:")
         pprint(items)
 
         pprint("\nKnapsack solve:")
-        pprint(self.knapsack.solve_dynamic_programming(items, 40))
+        solution = self.knapsack.solve_dynamic_programming(items, backpack_capacity)
 
         backpack_items = [Item(item) for item in items]
 
@@ -142,8 +143,27 @@ class GameScene:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for item in backpack_items:
                         if item.button.is_over(pygame.mouse.get_pos()):
+                            if item not in solution:
+                                self.state = GameState.GAME_OVER
                             if item not in self.backpack:
                                 self.backpack.append(item)
                 
                     if self.submit_button.is_over(pygame.mouse.get_pos()):
                             print("Submit button was clicked.")
+    
+        if self.state == GameState.GAME_OVER:
+            print('Game over')
+            self.window.fill((0, 0, 0))
+            self.draw_hud()
+
+            game_over_text = pygame.font.Font(None, 36).render("GAME OVER", True, (255, 255, 255))
+            self.window.blit(game_over_text, (WINDOW_WIDTH * 0.5, WINDOW_HEIGHT * 0.5))
+
+            pygame.display.flip()
+
+            while True:
+                clock.tick(15)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
