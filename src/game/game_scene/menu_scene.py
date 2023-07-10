@@ -5,12 +5,10 @@ import logging
 import pygame
 from pygame.locals import *
 
-from src.config import (
-    ASSETS_DIR
-)
+from src.config import ASSETS_DIR
 
 
-class Button():
+class Button:
     def __init__(self, left, top, width, height, return_value):
         self.rect = pygame.Rect(left, top, width, height)
         self.return_value = return_value
@@ -26,11 +24,13 @@ class Button():
 class MenuScene:
     def __init__(self, window):
         self.window = window
-        self.menu_background = pygame.image.load(ASSETS_DIR + f'menu_{random.randint(1, 2)}.png').convert_alpha()
-        
+        self.menu_background = pygame.image.load(
+            ASSETS_DIR + f"menu_{random.randint(1, 2)}.png"
+        ).convert_alpha()
+
     def run(self):
         clock = pygame.time.Clock()
-        
+
         font = pygame.font.Font(None, 30)
 
         while True:
@@ -39,20 +39,20 @@ class MenuScene:
 
             pygame.display.update()
 
-            easy_button = Button(155, 547, 250, 100, 'easy')
-            medium_button = Button(500, 547, 250, 100, 'medium')
-            hard_button = Button(840, 547, 250, 100, 'hard')
+            easy_button = Button(155, 547, 250, 100, "easy")
+            medium_button = Button(500, 547, 250, 100, "medium")
+            hard_button = Button(840, 547, 250, 100, "hard")
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     return
                 elif easy_button.check_click(event):
-                    logging.info('Easy mode selected...')
-                    return 'easy'
+                    logging.info("Easy mode selected...")
+                    return "easy"
                 elif medium_button.check_click(event):
-                    logging.info('Medium mode selected...')
-                    return 'medium'
+                    logging.info("Medium mode selected...")
+                    return "medium"
                 elif hard_button.check_click(event):
-                    logging.info('Hard mode selected...')
-                    return 'hard'
+                    logging.info("Hard mode selected...")
+                    return "hard"
