@@ -2,6 +2,7 @@ import math
 import random
 import logging
 import time
+import sys
 
 from pprint import pprint
 import pygame
@@ -150,14 +151,20 @@ class GameScene:
                 
                     if self.submit_button.is_over(pygame.mouse.get_pos()):
                             print("Submit button was clicked.")
+                            return score
     
         if self.state == GameState.GAME_OVER:
             print('Game over')
             self.window.fill((0, 0, 0))
-            self.draw_hud()
+            # self.draw_hud()
 
             game_over_text = pygame.font.Font(None, 36).render("GAME OVER", True, (255, 255, 255))
             self.window.blit(game_over_text, (WINDOW_WIDTH * 0.5, WINDOW_HEIGHT * 0.5))
+
+            # draw ok button to restart game
+            ok_button = Button("OK", (WINDOW_WIDTH * 0.5, WINDOW_HEIGHT * 0.6))
+            ok_button.render(self.window)
+
 
             pygame.display.flip()
 
@@ -167,3 +174,8 @@ class GameScene:
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         sys.exit()
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if ok_button.is_over(pygame.mouse.get_pos()):
+                            self.state = GameState.PLAYING
+                            return 0
