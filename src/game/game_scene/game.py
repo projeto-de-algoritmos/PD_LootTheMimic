@@ -3,15 +3,18 @@ import random
 import logging
 import time
 
+from pprint import pprint
 import pygame
 
 from src.config import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
 )
-
 from src.game.game_scene.menu_scene import MenuScene
 from src.game.knapsack import Knapsack
+
+
+clock = pygame.time.Clock()
 
 
 class GameState:
@@ -65,11 +68,12 @@ class GameScene:
         self.knapsack = Knapsack(self.window)
         itens = self.item_list
 
-        print("\nItens in chest:")
-        print(itens)
+        pprint("\nItens in chest:")
+        pprint(itens)
 
-        print("\nKnapsack solve:")
-        print(self.knapsack.solve_dynamic_programming(itens, 40))
+        pprint("\nKnapsack solve:")
+        pprint(self.knapsack.solve_dynamic_programming(itens, 40))
 
-        while True:
-            time.sleep(1)
+        while self.state == GameState.PLAYING:
+            clock.tick(15)
+            pygame.time.delay(100)
