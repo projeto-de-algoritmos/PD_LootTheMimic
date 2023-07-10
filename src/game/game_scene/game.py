@@ -12,7 +12,7 @@ from src.config import (
 )
 from src.game.game_scene.menu_scene import MenuScene
 from src.game.knapsack import Knapsack
-
+from src.game.game_scene.item import Item
 
 clock = pygame.time.Clock()
 
@@ -63,17 +63,37 @@ class GameScene:
     def draw_hud(self):
         self.window.blit(self.hud_image, (0, 0))
 
+    def render_items(self, backpack_items, screen, start_x=50, start_y=50, gap=10):
+        for index, item in enumerate(backpack_items):
+            item.render(screen, (start_x, start_y + index * (100 + gap)))
+
     def run(self):
         self.state = GameState.PLAYING
         self.knapsack = Knapsack(self.window)
-        itens = self.item_list
+        items = self.item_list
 
         pprint("\nItens in chest:")
-        pprint(itens)
+        pprint(items)
 
         pprint("\nKnapsack solve:")
-        pprint(self.knapsack.solve_dynamic_programming(itens, 40))
+        pprint(self.knapsack.solve_dynamic_programming(items, 40))
+
+        backpack_items = [Item(item) for item in items]
 
         while self.state == GameState.PLAYING:
+            self.render_items(backpack_items, self.window)
             clock.tick(15)
-            pygame.time.delay(100)
+            pygame.display.flip()
+
+            # Event handling
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for item in backpack_items:
+                        if item.button.is_over(pygame.mouse.get_pos()):
+                            print(f"Button for {item.name} was clicked.")
+                            # You can add the item to the backpack here
+                        
