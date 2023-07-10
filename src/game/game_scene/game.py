@@ -68,3 +68,6 @@ class GameScene:
 
         print('\nKnapsack solve:')
         print(self.knapsack.solve_dynamic_programming(itens, 40))
+
+        while True:
+            time.sleep(1)
