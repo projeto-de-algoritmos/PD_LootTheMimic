@@ -17,6 +17,26 @@ from src.game.game_scene.item import Item
 clock = pygame.time.Clock()
 
 
+class Button:
+    def __init__(self, text, pos, size=(400, 50), color=(255, 223, 0)):  # Gold color
+        self.text = text
+        self.pos = pos
+        self.size = size
+        self.color = color
+        self.font = pygame.font.Font(None, 36)
+
+        self.rect = pygame.Rect(self.pos, self.size)
+        self.text_surface = self.font.render(self.text, True, (0, 0, 0))  # Black text
+        self.text_rect = self.text_surface.get_rect(center=self.rect.center)
+
+    def render(self, screen):
+        pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.text_surface, self.text_rect)
+
+    def is_over(self, pos):
+        return self.rect.collidepoint(pos)
+
+
 class GameState:
     PLAYING = 1
     SPAWNING = 2
@@ -57,6 +77,11 @@ class GameScene:
         self.item_list = self.generate_sample_itens()
         self.start_ticks = pygame.time.get_ticks()
 
+        self.backpack = []
+        self.backpack_font = pygame.font.Font(None, 36)
+
+        self.submit_button = Button("Submit", (WINDOW_WIDTH * 0.7, WINDOW_HEIGHT * 0.9))
+
     def generate_sample_itens(self):
         return random.sample(self.ITEM_POOL, self.POOL_SIZE)
 
@@ -66,6 +91,22 @@ class GameScene:
     def render_items(self, backpack_items, screen, start_x=50, start_y=50, gap=10):
         for index, item in enumerate(backpack_items):
             item.render(screen, (start_x, start_y + index * (100 + gap)))
+    
+    def render_backpack(self, screen, start_x=950, start_y=100, gap=10):
+        backpack_title = self.backpack_font.render("Backpack", True, (255, 255, 255))  # assuming white color for text
+        screen.blit(backpack_title, (start_x, start_y - 50))  # put it above the backpack items
+
+        total_value = 0
+        for index, item in enumerate(self.backpack):
+            item.render_backpack(screen, (start_x, start_y + index * (80 + gap)))  # 100 is the height of the item rect and gap is the space between the items
+            total_value += item.value  # summing up the total value
+
+        # render the total value
+        total_value_surface = self.backpack_font.render(f"Total Value: {total_value}", True, (255, 255, 255))  # assuming white color for text
+        screen.blit(total_value_surface, (start_x, start_y + len(self.backpack) * (80 + gap) + 10))  # put it under the backpack items
+
+    def render_submit_button(self, screen):
+        self.submit_button.render(screen)
 
     def run(self):
         self.state = GameState.PLAYING
@@ -81,7 +122,14 @@ class GameScene:
         backpack_items = [Item(item) for item in items]
 
         while self.state == GameState.PLAYING:
+            self.window.fill((0, 0, 0))
+
             self.render_items(backpack_items, self.window)
+
+            self.render_backpack(self.window)
+
+            self.render_submit_button(self.window)
+
             clock.tick(15)
             pygame.display.flip()
 
@@ -94,6 +142,8 @@ class GameScene:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for item in backpack_items:
                         if item.button.is_over(pygame.mouse.get_pos()):
-                            print(f"Button for {item.name} was clicked.")
-                            # You can add the item to the backpack here
-                        
+                            if item not in self.backpack:
+                                self.backpack.append(item)
+                
+                    if self.submit_button.is_over(pygame.mouse.get_pos()):
+                            print("Submit button was clicked.")

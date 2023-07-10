@@ -35,7 +35,7 @@ class Item:
         self.weight = item_dict['weight']
         self.value = item_dict['value']
         # self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), f"../../assets/{self.name}.png")
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(None, 32)
         self.button = Button("Add", (0, 255, 0), 0, 0, 60, 30)
 
     def render(self, screen, pos):
@@ -62,3 +62,20 @@ class Item:
         self.button.x = pos[0] + (self.WIDTH * 0.8)  # Adjust position according to your design
         self.button.y = pos[1] + 35   # Adjust position according to your design
         self.button.draw(screen)
+
+    def render_backpack(self, screen, pos):
+        # define the rectangle
+        rect = pygame.Rect(pos[0], pos[1], self.WIDTH, self.HEIGHT * 0.5)
+        
+        # draw the rectangle
+        pygame.draw.rect(screen, (255, 255, 255), rect, 2)  # assuming white color for rectangle
+
+        # render the item properties
+        name_surface = self.font.render(self.name, True, (255, 255, 255))  # assuming white color for text
+        weight_surface = self.font.render(f'Weight: {str(self.weight)}', True, (255, 255, 255))
+        value_surface = self.font.render(f'Value: {str(self.value)}', True, (255, 255, 255))
+
+        # blit the properties onto the screen
+        screen.blit(name_surface, (pos[0] + 50, pos[1] + 15))
+        screen.blit(weight_surface, (pos[0] + 400, pos[1] + 15))
+        screen.blit(value_surface, (pos[0] + 550, pos[1] + 15))
