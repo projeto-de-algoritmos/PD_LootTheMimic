@@ -16,14 +16,14 @@ logging.basicConfig(level=logging.INFO)
 def main():
     logging.info("Initializing pygame...")
 
-    game_over_command = 'menu'
+    game_over_command = "menu"
 
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument('--demo', action='store_true')
-    #args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('--demo', action='store_true')
+    # args = parser.parse_args()
 
     # true if --demo, false if not
-    #print(args.demo)
+    # print(args.demo)
 
     try:
         pygame.init()
@@ -31,14 +31,12 @@ def main():
         window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
         while True:
-            #if game_over_command == 'menu':
-                #menu = MenuScene(window)
-                #difficulty = menu.run()
+            # if game_over_command == 'menu':
+            # menu = MenuScene(window)
+            # difficulty = menu.run()
 
             game_scene = GameScene(window)
             game_over_command = game_scene.run()
-            
-
 
     except Exception as e:
         logging.exception(e)
