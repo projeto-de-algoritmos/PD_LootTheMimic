@@ -1,7 +1,6 @@
 import logging
 import sys
 
-import moderngl
 import pygame
 import argparse
 from pygame.locals import *

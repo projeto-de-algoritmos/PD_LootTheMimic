@@ -3,6 +3,7 @@ import random
 import logging
 import time
 import sys
+import os
 
 from pprint import pprint
 import pygame
@@ -51,7 +52,7 @@ class GameScene:
         {"name": "Longsword", "weight": 5, "value": 20},
         {"name": "Greatshield of Artorias", "weight": 15, "value": 50},
         {"name": "Black Knight Greataxe", "weight": 12, "value": 40},
-        {"name": "Havel's Set", "weight": 20, "value": 60},
+        {"name": "Havel's Helm", "weight": 20, "value": 60},
         {"name": "Crystal Magic Weapon", "weight": 2, "value": 30},
         {"name": "Silver Knight Straight Sword", "weight": 6, "value": 25},
         {"name": "Giant Dad Mask", "weight": 4, "value": 35},
@@ -59,12 +60,12 @@ class GameScene:
         {"name": "Dragon Tooth", "weight": 18, "value": 55},
         {"name": "Crown of Dusk", "weight": 3, "value": 15},
         {"name": "Balder Side Sword", "weight": 4, "value": 20},
-        {"name": "Black Iron Set", "weight": 16, "value": 55},
+        {"name": "Black Iron Helm", "weight": 16, "value": 55},
         {"name": "Chaos Zweihander", "weight": 10, "value": 35},
         {"name": "Mask of the Child", "weight": 2, "value": 10},
         {"name": "Quelaag's Furysword", "weight": 8, "value": 30},
         {"name": "Dark Wood Grain Ring", "weight": 1, "value": 15},
-        {"name": "Silver Knight Armor Set", "weight": 12, "value": 40},
+        {"name": "Silver Knight Helm", "weight": 12, "value": 40},
         {"name": "Black Bow of Pharis", "weight": 5, "value": 25},
         {"name": "Grass Crest Shield", "weight": 3, "value": 15},
     ]
@@ -80,8 +81,11 @@ class GameScene:
 
         self.backpack = []
         self.backpack_font = pygame.font.Font(None, 36)
+        self.backpack_capacity = 10
 
         self.submit_button = Button("Submit", (WINDOW_WIDTH * 0.7, WINDOW_HEIGHT * 0.9))
+        self.menu_background = pygame.image.load(os.path.join(os.path.dirname(__file__), f"../../assets/mimic.jpg")).convert_alpha()
+
 
     def generate_sample_itens(self):
         return random.sample(self.ITEM_POOL, self.POOL_SIZE)
@@ -110,12 +114,19 @@ class GameScene:
 
         # render the total value
         total_value_surface = self.backpack_font.render(
-            f"Total Value: {total_value}", True, (255, 255, 255)
+            f"Total Value: {total_value}", True, (255, 255, 255),
         )  # assuming white color for text
+        backpack_capacity_surface = self.backpack_font.render(
+            f"Capacity: {self.backpack_capacity}", True, (255, 255, 255),
+        )
         screen.blit(
             total_value_surface,
             (start_x, start_y + len(self.backpack) * (80 + gap) + 10),
         )  # put it under the backpack items
+        screen.blit(
+            backpack_capacity_surface,
+            (start_x, start_y + len(self.backpack) * (80 + gap) + 40),
+        )
 
     def render_submit_button(self, screen):
         self.submit_button.render(screen)
@@ -123,22 +134,28 @@ class GameScene:
     def run(self):
         score = 0
         self.state = GameState.PLAYING
+
         self.knapsack = Knapsack(self.window)
         items = self.item_list
-        backpack_capacity = 10
+        # random capacity 10 to 20
+        self.backpack_capacity = random.randint(10, 20)
 
         pprint("\nItens in chest:")
         pprint(items)
 
         pprint("\nKnapsack solve:")
-        max_score, solution = self.knapsack.solve_dynamic_programming(items, backpack_capacity)
+        max_score, solution = self.knapsack.solve_dynamic_programming(items, self.backpack_capacity)
         pprint(solution)
         converted_solution = [Item(item).name for item in solution]
 
         backpack_items = [Item(item) for item in items]
 
         while self.state == GameState.PLAYING:
+
+            #background
             self.window.fill((0, 0, 0))
+            self.menu_background.set_alpha(80)
+            self.window.blit(self.menu_background, (0, 0))
 
             self.render_items(backpack_items, self.window)
 
