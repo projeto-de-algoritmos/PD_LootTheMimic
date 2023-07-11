@@ -56,10 +56,10 @@ python -m src.game.main
 ```
 
 #### Como jogar
-Na tela do jogo irá aparecer uma lista de itens
-Em cada item você pode clicar no botão "add" para adiciona-lo a mochila
-No botão "submit" você pode clicar para terminar a rodada e sair com o que você ainda tem na mochila
-O botão de continue serve para continuar para a proxima rodada. 
+Na tela do jogo irá aparecer uma lista de itens<br>
+Em cada item você pode clicar no botão "add" para adiciona-lo a mochila<br>
+No botão "submit" você pode clicar para terminar a rodada e sair com o que você ainda tem na mochila<br>
+O botão de continue serve para continuar para a proxima rodada. <br>
 
 ## Outros 
 Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
