@@ -45,7 +45,9 @@ class Item:
         self.name = item_dict["name"]
         self.weight = item_dict["weight"]
         self.value = item_dict["value"]
-        self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), f"../../assets/{self.name}.png"))
+        self.image = pygame.image.load(
+            os.path.join(os.path.dirname(__file__), f"../../assets/{self.name}.png")
+        )
         self.font = pygame.font.Font(None, 32)
         self.button = Button("Add", (0, 255, 0), 0, 0, 60, 30)
 
@@ -59,7 +61,9 @@ class Item:
         )  # assuming white color for rectangle
 
         # blit the image onto the screen
-        screen.blit(pygame.transform.scale(self.image, (80, 80)), (pos[0]+10, pos[1]+10))  # 10 pixels padding
+        screen.blit(
+            pygame.transform.scale(self.image, (80, 80)), (pos[0] + 10, pos[1] + 10)
+        )  # 10 pixels padding
 
         # render the item properties
         name_surface = self.font.render(
