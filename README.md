@@ -9,6 +9,10 @@
 | 18/0016563  |  Filipe Santana Machado |
 | 18/0014412  |  Cainã Valença de Freitas |
 
+## Apresentação
+
+[VIDEO DE APRESENTAÇÃO](https://github.com/projeto-de-algoritmos/PD_LootTheMimic/blob/master/presentation-video.mp4)
+
 ## Sobre 
 Este projeto implementa algoritmo que soluciona o problema de [Knapsack](https://en.wikipedia.org/wiki/Knapsack_problem) de forma dinâmica. É um método aprimorado de usar recursividade que ao invés de chamar uma função várias vezes ele, na primeira vez que é chamado, armazena o resultado para que cada vez que a função for chamada novamente volte o resultado e não uma requisição para ser resolvida.
 
