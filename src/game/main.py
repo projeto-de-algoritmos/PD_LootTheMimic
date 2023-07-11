@@ -103,6 +103,32 @@ def main():
                                 state = GameState.PLAYING
                                 continue
 
+            state = GameState.GAME_OVER
+
+            while True:
+                # render game over screen showing score
+                window.fill((0, 0, 0))
+
+                score_text = pygame.font.Font(None, 36).render(
+                    f"Your score: {overall_score}", True, (255, 255, 255)
+                )
+                window.blit(score_text, (200, 100))
+
+                continue_button = Button("Exit", (200, 200))
+                continue_button.render(window)
+
+                pygame.display.flip()
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if continue_button.is_over(pygame.mouse.get_pos()):
+                            state = GameState.PLAYING
+                            pygame.quit()
+
     except Exception as e:
         logging.exception(e)
         pygame.quit()
