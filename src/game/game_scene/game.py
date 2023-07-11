@@ -121,6 +121,7 @@ class GameScene:
         self.submit_button.render(screen)
 
     def run(self):
+        score = 0
         self.state = GameState.PLAYING
         self.knapsack = Knapsack(self.window)
         items = self.item_list
@@ -130,7 +131,9 @@ class GameScene:
         pprint(items)
 
         pprint("\nKnapsack solve:")
-        solution = self.knapsack.solve_dynamic_programming(items, backpack_capacity)
+        max_score, solution = self.knapsack.solve_dynamic_programming(items, backpack_capacity)
+        pprint(solution)
+        converted_solution = [Item(item).name for item in solution]
 
         backpack_items = [Item(item) for item in items]
 
@@ -155,9 +158,14 @@ class GameScene:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for item in backpack_items:
                         if item.button.is_over(pygame.mouse.get_pos()):
-                            if item not in solution:
+                            if item.name not in converted_solution:
+                                pprint(item)
+                                pprint('solution:')
+                                pprint(converted_solution)
                                 self.state = GameState.GAME_OVER
+                                return 0
                             if item not in self.backpack:
+                                score += item.value
                                 self.backpack.append(item)
 
                     if self.submit_button.is_over(pygame.mouse.get_pos()):
