@@ -16,6 +16,7 @@ logging.basicConfig(level=logging.INFO)
 
 ROUNDS = 5
 
+
 class GameState:
     PLAYING = 1
     GAME_OVER = 2
@@ -67,21 +68,25 @@ def main():
             # difficulty = menu.run()
 
             for round in range(ROUNDS):
-                print('Round', round + 1)
+                print("Round", round + 1)
                 game_scene = GameScene(window)
                 overall_score += game_scene.run()
-                
-                print(f'Score: {overall_score}')
+
+                print(f"Score: {overall_score}")
 
                 state = GameState.GAME_OVER
                 while state == GameState.GAME_OVER:
                     window.fill((0, 0, 0))
-                    
-                    round_text = pygame.font.Font(None, 36).render(f"Round: {round}/{ROUNDS}", True, (255, 255, 255))
+
+                    round_text = pygame.font.Font(None, 36).render(
+                        f"Round: {round}/{ROUNDS}", True, (255, 255, 255)
+                    )
 
                     window.blit(round_text, (100, 100))
 
-                    score_text = pygame.font.Font(None, 36).render(f"Your score: {overall_score}", True, (255, 255, 255))
+                    score_text = pygame.font.Font(None, 36).render(
+                        f"Your score: {overall_score}", True, (255, 255, 255)
+                    )
                     window.blit(score_text, (WINDOW_WIDTH * 0.5, WINDOW_HEIGHT * 0.5))
 
                     continue_button = Button("continue", (200, 200))
@@ -98,9 +103,6 @@ def main():
                             if continue_button.is_over(pygame.mouse.get_pos()):
                                 state = GameState.PLAYING
                                 continue
-
-
-        
 
     except Exception as e:
         logging.exception(e)

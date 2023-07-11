@@ -92,19 +92,30 @@ class GameScene:
     def render_items(self, backpack_items, screen, start_x=50, start_y=50, gap=10):
         for index, item in enumerate(backpack_items):
             item.render(screen, (start_x, start_y + index * (100 + gap)))
-    
+
     def render_backpack(self, screen, start_x=950, start_y=100, gap=10):
-        backpack_title = self.backpack_font.render("Backpack", True, (255, 255, 255))  # assuming white color for text
-        screen.blit(backpack_title, (start_x, start_y - 50))  # put it above the backpack items
+        backpack_title = self.backpack_font.render(
+            "Backpack", True, (255, 255, 255)
+        )  # assuming white color for text
+        screen.blit(
+            backpack_title, (start_x, start_y - 50)
+        )  # put it above the backpack items
 
         total_value = 0
         for index, item in enumerate(self.backpack):
-            item.render_backpack(screen, (start_x, start_y + index * (80 + gap)))  # 100 is the height of the item rect and gap is the space between the items
+            item.render_backpack(
+                screen, (start_x, start_y + index * (80 + gap))
+            )  # 100 is the height of the item rect and gap is the space between the items
             total_value += item.value  # summing up the total value
 
         # render the total value
-        total_value_surface = self.backpack_font.render(f"Total Value: {total_value}", True, (255, 255, 255))  # assuming white color for text
-        screen.blit(total_value_surface, (start_x, start_y + len(self.backpack) * (80 + gap) + 10))  # put it under the backpack items
+        total_value_surface = self.backpack_font.render(
+            f"Total Value: {total_value}", True, (255, 255, 255)
+        )  # assuming white color for text
+        screen.blit(
+            total_value_surface,
+            (start_x, start_y + len(self.backpack) * (80 + gap) + 10),
+        )  # put it under the backpack items
 
     def render_submit_button(self, screen):
         self.submit_button.render(screen)
@@ -148,23 +159,24 @@ class GameScene:
                                 self.state = GameState.GAME_OVER
                             if item not in self.backpack:
                                 self.backpack.append(item)
-                
+
                     if self.submit_button.is_over(pygame.mouse.get_pos()):
-                            print("Submit button was clicked.")
-                            return score
-    
+                        print("Submit button was clicked.")
+                        return score
+
         if self.state == GameState.GAME_OVER:
-            print('Game over')
+            print("Game over")
             self.window.fill((0, 0, 0))
             # self.draw_hud()
 
-            game_over_text = pygame.font.Font(None, 36).render("GAME OVER", True, (255, 255, 255))
+            game_over_text = pygame.font.Font(None, 36).render(
+                "GAME OVER", True, (255, 255, 255)
+            )
             self.window.blit(game_over_text, (WINDOW_WIDTH * 0.5, WINDOW_HEIGHT * 0.5))
 
             # draw ok button to restart game
             ok_button = Button("OK", (WINDOW_WIDTH * 0.5, WINDOW_HEIGHT * 0.6))
             ok_button.render(self.window)
-
 
             pygame.display.flip()
 
